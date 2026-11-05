@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 
 <head>
     <meta charset="UTF-8">
@@ -9,7 +9,7 @@
     <style>
         body {
             background: #EAF0F6;
-            font-family: Arial;
+            font-family: Arial, sans-serif;
             color: #172B45;
             margin: 0;
             padding: 25px;
@@ -41,23 +41,40 @@
             border-radius: 12px;
             text-align: center;
             box-shadow: 0 3px 10px #00000020;
+            overflow: hidden;
         }
 
-        /* JPEG - fotografia */
+        /* Imagens com indicação interativa ao passar o mouse */
+        .cartao img {
+            cursor: pointer;
+        }
+
+        /* --- 1. JPEG (Fotografia): Efeito Zoom --- */
         .foto {
             width: 100%;
             height: 220px;
             object-fit: contain;
             border-radius: 8px;
+            transition: transform 0.4s ease, filter 0.4s ease;
         }
 
-        /* SVG - imagem vetorial */
+        .foto:hover {
+            transform: scale(1.08);
+            filter: brightness(1.1);
+        }
+
+        /* --- 2. SVG (Ícone): Efeito Rotação --- */
         .icone {
             width: 250px;
             height: 250px;
+            transition: transform 0.5s ease;
         }
 
-        /* PNG - fundo transparente */
+        .icone:hover {
+            transform: rotate(15deg) scale(1.05);
+        }
+
+        /* --- 3. PNG (Ilustração): Efeito Flutuação --- */
         .area-png {
             background: #FFFF00;
             padding: 15px;
@@ -68,17 +85,110 @@
             width: 180px;
             height: 120px;
             object-fit: contain;
+            transition: transform 0.3s ease;
         }
 
-        /* GIF - imagem animada */
+        .ilustracao:hover {
+            transform: translateY(-8px);
+        }
+
+        /* --- 4. GIF (Animação): Efeito Glow e Zoom --- */
         .animacao {
             width: 180px;
             height: 100px;
             object-fit: contain;
+            transition: filter 0.3s ease, transform 0.3s ease;
+        }
+
+        .animacao:hover {
+            filter: drop-shadow(0px 0px 10px #17365D);
+            transform: scale(1.05);
         }
 
         p {
             color: #52657D;
+        }
+
+        /* --- ESTILOS DO MODAL E SONIC AVATAR --- */
+        #modal-avatar {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            backdrop-filter: blur(3px);
+        }
+
+        .container-avatar {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            animation: apareceSonic 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+        }
+
+        /* Bolha de fala */
+        .bolha-fala {
+            background: #FFFFFF;
+            color: #172B45;
+            padding: 14px 24px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 20px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+            border: 3px solid #0055FF;
+            position: relative;
+            margin-bottom: 12px;
+            text-align: center;
+        }
+
+        /* Ponta da bolha apontando para o Sonic */
+        .bolha-fala::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-width: 10px 10px 0;
+            border-style: solid;
+            border-color: #0055FF transparent;
+            display: block;
+            width: 0;
+        }
+
+        /* Avatar Sonic em SVG */
+        .sonic-avatar {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            background: #0055FF;
+            border: 4px solid #FFFFFF;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .sonic-avatar svg {
+            width: 120px;
+            height: 120px;
+        }
+
+        @keyframes apareceSonic {
+            from {
+                transform: scale(0.5) translateY(20px);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1) translateY(0);
+                opacity: 1;
+            }
         }
     </style>
 </head>
@@ -94,74 +204,82 @@
     <div class="galeria">
 
         <div class="cartao">
-
             <h2>Fotografia</h2>
-
             <!-- JPEG -->
-            <img src="fotoatividade.jpg" class="foto" alt="Fotografia de um ambiente">
-
+            <img src="fotoatividade.jpg" class="foto" alt="Fotografia de um ambiente" onclick="mostrarAvatar(this)">
             <h3>Formato JPEG</h3>
-
-            <p>
-                Utilizado principalmente em fotografias.
-            </p>
-
+            <p>Utilizado principalmente em fotografias.</p>
         </div>
 
-
         <div class="cartao">
-
             <h2>Ícone</h2>
-
             <!-- SVG -->
-            <img src="icone-atividade.svg" class="icone" alt="Ícone vetorial">
-
+            <img src="icone-atividade.svg" class="icone" alt="Ícone vetorial" onclick="mostrarAvatar(this)">
             <h3>Formato SVG</h3>
-
-            <p>
-                Imagem vetorial que pode ser ampliada
-                sem perder a qualidade.
-            </p>
-
+            <p>Imagem vetorial que pode ser ampliada sem perder a qualidade.</p>
         </div>
 
-
         <div class="cartao">
-
             <h2>Ilustração</h2>
-
             <!-- PNG -->
             <div class="area-png">
-
-                <img src="imagem-atividade.png" class="ilustracao" alt="Ilustração com transparência">
-
+                <img src="imagem-atividade.png" class="ilustracao" alt="Ilustração com transparência" onclick="mostrarAvatar(this)">
             </div>
-
             <h3>Formato PNG</h3>
-
-            <p>
-                Pode apresentar fundo transparente.
-            </p>
-
+            <p>Pode apresentar fundo transparente.</p>
         </div>
 
-
         <div class="cartao">
-
             <h2>Animação</h2>
-
             <!-- GIF -->
-            <img src="gif-atividade.gif" class="animacao" alt="Imagem animada">
-
+            <img src="gif-atividade.gif" class="animacao" alt="Imagem animada" onclick="mostrarAvatar(this)">
             <h3>Formato GIF</h3>
-
-            <p>
-                Permite apresentar pequenas animações.
-            </p>
-
+            <p>Permite apresentar pequenas animações.</p>
         </div>
 
     </div>
+
+    <!-- Modal com Avatar do Sonic -->
+    <div id="modal-avatar" onclick="fecharAvatar()">
+        <div class="container-avatar">
+            <div class="bolha-fala" id="texto-bolha">Título</div>
+            
+            <div class="sonic-avatar">
+                <svg viewBox="0 0 100 100">
+                    <!-- Espinhos da cabeça do Sonic -->
+                    <path d="M 20 45 C 5 25, 30 15, 45 25 C 40 10, 65 5, 75 25 C 80 15, 95 25, 85 45 C 95 55, 80 75, 65 75 L 35 75 C 20 75, 10 60, 20 45 Z" fill="#0055FF" />
+                    <!-- Focinho -->
+                    <ellipse cx="50" cy="62" rx="26" ry="18" fill="#F9C99A" />
+                    <!-- Nariz -->
+                    <ellipse cx="50" cy="52" rx="5" ry="4" fill="#111111" />
+                    <!-- Olhos -->
+                    <ellipse cx="40" cy="40" rx="9" ry="16" fill="#FFFFFF" />
+                    <ellipse cx="60" cy="40" rx="9" ry="16" fill="#FFFFFF" />
+                    <!-- Pupilas Verdes do Sonic -->
+                    <ellipse cx="42" cy="42" rx="4" ry="8" fill="#00AA44" />
+                    <ellipse cx="58" cy="42" rx="4" ry="8" fill="#00AA44" />
+                    <ellipse cx="43" cy="40" rx="1.5" ry="3" fill="#FFFFFF" />
+                    <ellipse cx="59" cy="40" rx="1.5" ry="3" fill="#FFFFFF" />
+                    <!-- Sorriso Confiante -->
+                    <path d="M 42 66 Q 54 74 62 64" stroke="#111111" stroke-width="2.5" fill="none" stroke-linecap="round" />
+                </svg>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function mostrarAvatar(elementoImagem) {
+            const cartao = elementoImagem.closest('.cartao');
+            const tituloH2 = cartao.querySelector('h2').innerText;
+
+            document.getElementById('texto-bolha').innerText = tituloH2;
+            document.getElementById('modal-avatar').style.display = 'flex';
+        }
+
+        function fecharAvatar() {
+            document.getElementById('modal-avatar').style.display = 'none';
+        }
+    </script>
 
 </body>
 
