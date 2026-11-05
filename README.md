@@ -1,0 +1,1 @@
+# Atividade-Edicao-imaggem-051126
